@@ -10,7 +10,7 @@
             </thead>
             <tbody>
             <tr v-for="row of resources">
-                <td v-for="column of columns">{{ row[column.name] }}</td>
+                <td v-for="column of columns" v-html="prepColumnContent(row[column.name])"></td>
                 <td v-if="hasAction" class="text-center">
                     <a :href="'/' + resource + '/' + row.id" v-if="editable">
                         <i class="fa fa-edit"></i>
@@ -26,8 +26,9 @@
             </tr>
             </tbody>
         </table>
-        <div class="panel-body">
-            <pagination :url="'/api/' + resource" v-on:data-changed="dataChanged" ref="pagination"></pagination>
+        <div class="panel-body" v-if="paginate">
+            <pagination v-on:page-changed="pageChanged" :total-page="pagination.totalPage"
+                        ref="pagination"></pagination>
         </div>
     </div>
 </template>
@@ -37,6 +38,8 @@
     }
 </style>
 <script>
+    import AutoLinker from 'autolinker';
+
     export default {
         props: {
             resource: String,
@@ -52,10 +55,18 @@
                 type: Boolean,
                 default: true
             },
+            paginate: {
+                type: Boolean,
+                default: true
+            }
         },
         data(){
             return {
-                resources: []
+                resources: [],
+                pagination: {
+                    page: 1,
+                    totalPage: 1
+                }
             }
         },
         computed: {
@@ -64,11 +75,31 @@
             },
             hasAction(){
                 return this.editable || this.deletable;
+            },
+            resourceUrl(){
+                return '/api/' + this.resource;
             }
         },
         methods: {
-            dataChanged(data){
-                this.resources = data;
+            getData(page){
+                let vm = this;
+
+                this.$http.get(this.resourceUrl, {
+                    params: {
+                        page: page ? page : vm.pagination.page
+                    }
+                }).then(function (response) {
+                    response.json().then(function (res) {
+                        vm.resources = res.data;
+                        vm.pagination.page = res.meta.pagination.current_page;
+                        vm.pagination.totalPage = res.meta.pagination.total_pages;
+                    }, function (res) {
+                        toastr.error(res.message);
+                    });
+                });
+            },
+            pageChanged(page){
+                this.getData(page);
             },
             deleteRow(row){
                 if (!confirm('Delete data?')) {
@@ -76,11 +107,17 @@
                 }
 
                 this.$http.delete('/api/' + this.resource + '/' + row.id).then(function (response) {
-                    this.$refs.pagination.getData();
+                    this.getData(this.pagination.page);
 
                     toastr.success('Data deleted successfully.');
                 }, this.$root.handleResponseError);
+            },
+            prepColumnContent(content){
+                return AutoLinker.link(content);
             }
+        },
+        mounted(){
+            this.getData();
         }
     }
 </script>
