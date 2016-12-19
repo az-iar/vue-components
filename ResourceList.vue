@@ -1,6 +1,6 @@
 <template>
     <div class="panel panel-default">
-        <!--<div class="panel-heading"><strong>{{ resource }}</strong></div>-->
+        <div class="panel-heading" v-if="heading"><strong>{{ heading }}</strong></div>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -42,6 +42,7 @@
 
     export default {
         props: {
+            heading: String,
             resource: String,
             columns: {
                 type: Array,

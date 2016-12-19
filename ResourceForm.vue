@@ -5,7 +5,7 @@
                 <slot></slot>
             </div>
             <div class="panel-footer">
-                <button type="submit" class="btn btn-primary" :disabled="processing">
+                <button type="submit" class="btn btn-primary" :disabled="processing" v-if="!readOnly">
                     <span v-if="processing"><i class="fa fa-spinner fa-spin"></i> Processing..</span>
                     <span v-else>{{ submitText }}</span>
                 </button>
@@ -41,7 +41,11 @@
             refreshAfterSubmit: {
                 type: Boolean,
                 default: false
-            }
+            },
+            readOnly: {
+                type: Boolean,
+                default: false
+            },
         },
         data(){
             return {
@@ -59,23 +63,25 @@
                 let form = e.target;
                 let formData = new FormData(form);
 
-                this.processing = true;
+                vm.processing = true;
 
                 this.$http.post(form.action, formData).then(function (response) {
                     vm.processing = false;
-                    toastr.success(pluralize(capitalize(this.resource), 1) + ' ' + vm.submitText + 'd successfully.');
 
-                    response.json().then(res => {
+                    response.json().then(function (res) {
                         vm.$emit('success', res.data);
                     });
+
+                    toastr.success(pluralize(capitalize(this.resource), 1) + ' ' + vm.submitText + 'd successfully.');
 
                     if (vm.redirectToResources) {
                         setTimeout(function () {
                             window.location = '/' + vm.resource;
-                        }, 500);
+                        }, 1000);
                     }
-                }, function (response) {
+                }).catch(function (response) {
                     vm.processing = false;
+
                     vm.$root.handleResponseError(response);
                 });
             }

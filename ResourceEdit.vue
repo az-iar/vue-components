@@ -1,5 +1,5 @@
 <template>
-    <resource-form :resource="resource" submit-text="update" :action="formAction" :redirect-to-resources="false"
+    <resource-form :resource="resource" submit-text="update" :read-only="readOnly" :action="formAction"
                    v-on:success="onSuccess">
         <input type="hidden" name="_method" value="put">
         <slot></slot>
@@ -16,10 +16,10 @@
                 type: Number,
                 required: true
             },
-            reloadOnSuccess: {
+            readOnly: {
                 type: Boolean,
                 default: false
-            }
+            },
         },
         data(){
             return {
@@ -33,9 +33,7 @@
         },
         methods: {
             onSuccess(data){
-                if (this.reloadOnSuccess) {
-                    location.reload();
-                }
+                //console.log(data);
             }
         }
     }
