@@ -1,18 +1,19 @@
 <template>
-    <textarea :name="name" cols="30" rows="10" class="trumbowed form-control" :placeholder="placeholder"><slot></slot></textarea>
+    <textarea :name="name" cols="30" rows="10" class="trumbowed form-control" :placeholder="placeholder"
+              v-model="content"></textarea>
 </template>
 <script>
-    let $ = window.jQuery;
+    import $ from 'jquery';
     import 'trumbowyg';
 
     export default {
-        props: ['name', 'placeholder'],
+        props: ['name', 'content', 'placeholder'],
         mounted(){
             let vm = this;
 
-            $.trumbowyg.svgPath = '/images/trumbowyg-icons.svg';
-
-            $('.trumbowed').trumbowyg().on('tbwchange', function (e) {
+            $('.trumbowed').trumbowyg({
+                svgPath: '/images/icons/trumbowyg.svg'
+            }).on('tbwchange', function (e) {
                 vm.$emit('changed', e.target.value);
             });
         }
