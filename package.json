@@ -12,7 +12,9 @@
     "component"
   ],
   "devDependencies": {
+    "autolinker": "^3.11.1",
     "feather-icons": "^4.25.0",
+    "google-maps": "^4.2.3",
     "tailwindcss": "^1.1.4",
     "vue": "^2.6.11"
   }

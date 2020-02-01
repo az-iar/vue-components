@@ -2,11 +2,7 @@
     export default {
         name: "Card",
         render(createElement, context) {
-            return createElement('div', {
-                class: {
-
-                }
-            })
+            return createElement("div", {});
         }
     };
 </script>

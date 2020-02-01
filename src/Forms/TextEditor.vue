@@ -1,21 +1,30 @@
 <template>
-    <textarea :name="name" cols="30" rows="10" class="trumbowed form-control" :placeholder="placeholder"
-              v-model="content"></textarea>
+    <textarea
+        v-model="content"
+        :name="name"
+        v-bind="attributes"
+    ></textarea>
 </template>
 <script>
-    import $ from 'jquery';
-    import 'trumbowyg';
-
     export default {
-        props: ['name', 'content', 'placeholder'],
-        mounted(){
-            let vm = this;
-
-            $('.trumbowed').trumbowyg({
-                svgPath: '/images/icons/trumbowyg.svg'
-            }).on('tbwchange', function (e) {
-                vm.$emit('changed', e.target.value);
-            });
+        props: {
+            value: {
+                type: String,
+                default: null
+            }
+        },
+        computed: {
+            content: {
+                get() {
+                    return this.value;
+                },
+                set(value) {
+                    this.$emit("input", value);
+                }
+            },
+            attributes() {
+                return this.$attrs;
+            }
         }
-    }
+    };
 </script>
