@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Collections of Vue components",
   "main": "index.js",
-  "repository": "git@github.com:az-iar/vue-component-collections.git",
+  "repository": "git@github.com:az-iar/vue-components.git",
   "author": "Azri Ismail <mazri.iar@gmail.com>",
   "license": "MIT",
   "keywords": [
