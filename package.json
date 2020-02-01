@@ -1,12 +1,11 @@
 {
-  "name": "vue-components",
+  "name": "vue-components-collections",
   "version": "0.1.0",
   "description": "Collections of Vue components",
   "main": "index.js",
-  "repository": "git@github.com:az-iar/vue-components.git",
+  "repository": "git@github.com:az-iar/vue-component-collections.git",
   "author": "Azri Ismail <mazri.iar@gmail.com>",
   "license": "MIT",
-  "private": true,
   "keywords": [
     "vue",
     "component"
