@@ -1,0 +1,19 @@
+{
+  "name": "vue-components",
+  "version": "0.1.0",
+  "description": "Collections of Vue components",
+  "main": "index.js",
+  "repository": "git@github.com:az-iar/vue-components.git",
+  "author": "Azri Ismail <mazri.iar@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "keywords": [
+    "vue",
+    "component"
+  ],
+  "devDependencies": {
+    "feather-icons": "^4.25.0",
+    "tailwindcss": "^1.1.4",
+    "vue": "^2.6.11"
+  }
+}
